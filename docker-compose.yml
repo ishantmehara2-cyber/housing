@@ -1,0 +1,22 @@
+version: '3.8'
+
+# OPTIONAL LOCAL INFRASTRUCTURE
+# Note: Primary development database is local MySQL Server running on host (127.0.0.1:3306).
+# MinIO provides local S3-compatible object storage testing.
+
+services:
+  minio:
+    image: minio/minio:RELEASE.2024-01-18T22-51-28Z
+    container_name: housing_clone_minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  minio_data:

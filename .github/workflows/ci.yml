@@ -1,0 +1,67 @@
+name: Housing Marketplace CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: housing_clone
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Validate Prisma Schema & Generate Client
+        run: |
+          npx prisma validate
+          npx prisma generate
+        env:
+          DATABASE_URL: "mysql://root:password@127.0.0.1:3306/housing_clone"
+
+      - name: Apply Database Migrations
+        run: npx prisma db push
+        env:
+          DATABASE_URL: "mysql://root:password@127.0.0.1:3306/housing_clone"
+
+      - name: Typecheck Monorepo Workspaces
+        run: npm run typecheck
+
+      - name: ESLint Code Verification
+        run: npm run lint
+
+      - name: Run Test Suites
+        run: npm run test
+        env:
+          DATABASE_URL: "mysql://root:password@127.0.0.1:3306/housing_clone"
+          JWT_SECRET: "ci_pipeline_super_secret_jwt_key_at_least_32_chars"
+          JWT_REFRESH_SECRET: "ci_pipeline_super_secret_refresh_key_at_least_32_chars"
+          NODE_ENV: "test"
+
+      - name: Build All Workspaces
+        run: npm run build

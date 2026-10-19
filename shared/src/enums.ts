@@ -1,0 +1,126 @@
+export enum Role {
+  VISITOR = 'VISITOR',
+  TENANT_BUYER = 'TENANT_BUYER',
+  OWNER = 'OWNER',
+  AGENT = 'AGENT',
+  DEVELOPER = 'DEVELOPER',
+  MODERATOR = 'MODERATOR',
+  ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+}
+
+export enum UserStatus {
+  PENDING = 'PENDING',
+  ACTIVE = 'ACTIVE',
+  SUSPENDED = 'SUSPENDED',
+  DELETED = 'DELETED',
+}
+
+export enum ListingPurpose {
+  BUY = 'BUY',
+  RENT = 'RENT',
+  COMMERCIAL = 'COMMERCIAL',
+  PG_COLIVING = 'PG_COLIVING',
+  PLOT = 'PLOT',
+}
+
+export enum PropertyCategory {
+  RESIDENTIAL = 'RESIDENTIAL',
+  COMMERCIAL = 'COMMERCIAL',
+  AGRICULTURAL = 'AGRICULTURAL',
+  INDUSTRIAL = 'INDUSTRIAL',
+}
+
+export enum AreaUnit {
+  SQFT = 'SQFT',
+  SQYD = 'SQYD',
+  ACRE = 'ACRE',
+  HECTARE = 'HECTARE',
+}
+
+export enum Furnishing {
+  UNFURNISHED = 'UNFURNISHED',
+  SEMI_FURNISHED = 'SEMI_FURNISHED',
+  FULLY_FURNISHED = 'FULLY_FURNISHED',
+}
+
+export enum Facing {
+  EAST = 'EAST',
+  WEST = 'WEST',
+  NORTH = 'NORTH',
+  SOUTH = 'SOUTH',
+  NORTH_EAST = 'NORTH_EAST',
+  NORTH_WEST = 'NORTH_WEST',
+  SOUTH_EAST = 'SOUTH_EAST',
+  SOUTH_WEST = 'SOUTH_WEST',
+}
+
+export enum PropertyAge {
+  NEW_CONSTRUCTION = 'NEW_CONSTRUCTION',
+  LESS_THAN_1_YEAR = 'LESS_THAN_1_YEAR',
+  ONE_TO_5_YEARS = 'ONE_TO_5_YEARS',
+  FIVE_TO_10_YEARS = 'FIVE_TO_10_YEARS',
+  TEN_PLUS_YEARS = 'TEN_PLUS_YEARS',
+}
+
+export enum PossessionStatus {
+  READY_TO_MOVE = 'READY_TO_MOVE',
+  UNDER_CONSTRUCTION = 'UNDER_CONSTRUCTION',
+}
+
+export enum VerificationState {
+  UNVERIFIED = 'UNVERIFIED',
+  PENDING = 'PENDING',
+  VERIFIED = 'VERIFIED',
+  REJECTED = 'REJECTED',
+}
+
+export enum ListingState {
+  DRAFT = 'DRAFT',
+  PENDING_APPROVAL = 'PENDING_APPROVAL',
+  ACTIVE = 'ACTIVE',
+  PAUSED = 'PAUSED',
+  EXPIRED = 'EXPIRED',
+  SOLD = 'SOLD',
+  RENTED = 'RENTED',
+  REJECTED = 'REJECTED',
+}
+
+export enum MediaType {
+  IMAGE = 'IMAGE',
+  VIDEO = 'VIDEO',
+  FLOOR_PLAN = 'FLOOR_PLAN',
+  DOCUMENT_PDF = 'DOCUMENT_PDF',
+  VIRTUAL_TOUR = 'VIRTUAL_TOUR',
+}
+
+export enum LeadStatus {
+  NEW = 'NEW',
+  CONTACTED = 'CONTACTED',
+  MEETING_SCHEDULED = 'MEETING_SCHEDULED',
+  NEGOTIATING = 'NEGOTIATING',
+  CONVERTED = 'CONVERTED',
+  LOST = 'LOST',
+  SPAM = 'SPAM',
+}
+
+export enum VisitStatus {
+  SCHEDULED = 'SCHEDULED',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+  RESCHEDULED = 'RESCHEDULED',
+}
+
+export enum NotificationChannel {
+  IN_APP = 'IN_APP',
+  EMAIL = 'EMAIL',
+  SMS = 'SMS',
+  PUSH = 'PUSH',
+}
+
+export enum PaymentStatus {
+  PENDING = 'PENDING',
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+  REFUNDED = 'REFUNDED',
+}

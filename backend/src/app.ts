@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import path from 'path';
+import fs from 'fs';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
@@ -14,8 +15,12 @@ import { seoRouter } from './routes/seo.routes';
 export function createApp(): Express {
   const app = express();
 
-  // Security Headers
-  app.use(helmet());
+  // Security Headers (configured to allow inline scripts and assets)
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+    })
+  );
 
   // Request ID
   app.use(requestIdMiddleware);
@@ -23,7 +28,7 @@ export function createApp(): Express {
   // CORS
   app.use(
     cors({
-      origin: env.FRONTEND_URL,
+      origin: env.FRONTEND_URL || true,
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     })
@@ -48,6 +53,12 @@ export function createApp(): Express {
   // Static Uploads Serving
   app.use('/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
 
+  // Single-Bundle Frontend Web App Serving
+  const clientPublicDir = path.join(__dirname, 'public');
+  if (fs.existsSync(clientPublicDir)) {
+    app.use(express.static(clientPublicDir));
+  }
+
   // Body Parsing
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -64,6 +75,24 @@ export function createApp(): Express {
 
   // API v1 Routes
   app.use('/api/v1', apiV1Router);
+
+  // SPA Client Route Fallback for Single-Bundle Deployment
+  app.get('*', (req, res, next) => {
+    if (
+      req.url.startsWith('/api') ||
+      req.url.startsWith('/uploads') ||
+      req.url.startsWith('/sitemap') ||
+      req.url === '/robots.txt'
+    ) {
+      return next();
+    }
+
+    const indexPath = path.join(clientPublicDir, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
+    next();
+  });
 
   // 404 & Error Handlers
   app.use(notFoundHandler);
